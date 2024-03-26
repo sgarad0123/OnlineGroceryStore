@@ -1,0 +1,32 @@
+﻿@model GroceryStore.Models.Payment
+
+<h2>Payment Details</h2>
+
+<table class="table">
+    <tr>
+        <th>Payment ID</th>
+        <td>@Model.PaymentID</td>
+    </tr>
+    <tr>
+        <th>Type</th>
+        <td>@Model.Type</td>
+    </tr>
+    <tr>
+        <th>Credit Amount</th>
+        <td>@Model.CreditAmount</td>
+    </tr>
+    <tr>
+        <th>Debit Amount</th>
+        <td>@Model.DebitAmount</td>
+    </tr>
+    <tr>
+        <th>Balance</th>
+        <td>@Model.Balance</td>
+    </tr>
+    <tr>
+        <th>Payment Date</th>
+        <td>@Model.PaymentDateTime</td>
+    </tr>
+</table>
+
+@Html.ActionLink("Back to List", "Index")

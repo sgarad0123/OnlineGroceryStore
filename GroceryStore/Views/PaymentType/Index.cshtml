@@ -1,0 +1,31 @@
+﻿@model List<GroceryStore.Models.PaymentType>
+
+<h2>Payment Types</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Payment Type ID</th>
+            <th>Type Name</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var paymentType in Model)
+        {
+            <tr>
+                <td>@paymentType.PayTypeID</td>
+                <td>@paymentType.TypeName</td>
+                <td>@paymentType.Description</td>
+                <td>
+                    @Html.ActionLink("Details", "Details", new { id = paymentType.PayTypeID })
+                    @Html.ActionLink("Edit", "Edit", new { id = paymentType.PayTypeID })
+                    @Html.ActionLink("Delete", "Delete", new { id = paymentType.PayTypeID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@Html.ActionLink("Create New Payment Type", "Create")

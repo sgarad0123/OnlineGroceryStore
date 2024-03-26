@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<!-- Cart view section -->
+<section id="aa-myaccount">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="aa-myaccount-area">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="aa-myaccount-login">
+                                <h4>Login</h4>
+
+                                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "aa-login-form" }))
+                                {
+                                    <label for="">Username or Email address<span>*</span></label>
+                                    <input name="UserName" type="text" id="UserName" required placeholder="Username">
+                                    <label for="">Password<span>*</span></label>
+                                    <input name="Password" type="password" id="PassWord" required placeholder="Password">
+                                    <button type="submit" class="btn btn-success" onclick="validatePassword();">Login</button>
+                                    <label class="rememberme" for="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
+                                    <p class="aa-lost-password"><a href="#">Lost your password?</a></p>}
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="aa-myaccount-register">
+                                <h4>don't have any account?</h4>
+                                @*
+                                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "aa-login-form" }))
+                                    {
+                                        <label for="">First Name<span>*</span></label>
+                                        <input name="First_Name" type="text" placeholder="Enter first name">
+
+                                        <label for="">Last Name<span>*</span></label>
+                                        <input name="Last_Name" type="text" placeholder="Enter last name">
+
+                                        <label for="">Username<span>*</span></label>
+                                        <input name="UserName" type="text" placeholder="Username">
+
+                                        <label for="">Password<span>*</span></label>
+                                        <input name="Password" type="password" placeholder="Password">
+
+                                        <label for="">Email<span>*</span></label>
+                                        <input name="Email" type="text" placeholder="Enter your email">
+
+                                        <label for="">Mobile<span>*</span></label>
+                                        <input name="Phone" type="text" placeholder="Mobile">
+
+                                        <label for="">Address<span></span></label>
+                                        <input name="Address" type="text" placeholder="Address">
+
+                                        <button type="submit" class="btn btn-primary">Register</button>
+                                      }*@
+
+                                <h3 class="text-info">Click the button below to create a new account</h3>
+
+                                <a href="@Url.Action("RegisterCustomer", "Account")" class="btn btn-primary btn-block fs-2">Register Now</a>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- / Cart view section -->
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function validatePassword() {
+
+        var User = document.getElementById("UserName").value;
+        var Pass = document.getElementById("PassWord").value;
+
+
+
+        if (User=="" && Pass=="") {
+            alert("Username & Password necessary, Please enter it..");
+            document.getElementById("UserName").focus();
+            return false;
+        } else if (User=="") {
+            alert("Username  necessary! Please enter It...");
+            document.getElementById("UserName").focus();
+            return false;
+        } else if (Pass == "") {
+            alert("Password necessry! Please enter Password...")
+            document.getElementById("PassWord").focus();
+            return false;
+        }
+
+        else if (User.length<4) {
+            alert("Invalid Length. Username greater than 4 char...")
+            document.getElementById("UserName").focus();
+            return false;
+        }
+
+        else if (Pass.length <= 4 || Pass.length>=18) {
+            alert("Invalid Length, Password at least 4 char...")
+            document.getElementById("PassWord").focus();
+            return false;
+        }
+
+        return true;
+    }
+</script>
+

@@ -1,0 +1,273 @@
+﻿
+@{
+    ViewBag.Title = "Grocery Store";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<style>
+    .aa-browse-btn {
+        display: inline-block;
+        font-size: 16px;
+        padding: 12px 18px;
+        color: #a94442;
+    }
+
+    #aa-banner {
+        padding: 30px 0;
+        background-color: #f8f8f8;
+        text-align: center;
+    }
+
+    .aa-banner-area img {
+        max-width: 100%;
+        height: 174px;
+        width: 1038px;
+        display: inline-block;
+        vertical-align: middle;
+    }
+</style>
+<!-- Start slider -->
+<section id="aa-slider">
+    <div class="aa-slider-area">
+        <div id="sequence" class="seq">
+            <div class="seq-screen">
+                <ul class="seq-canvas">
+
+                    <!-- single slide item -->
+                    @foreach (var item in @ViewBag.Slider)
+                    {
+                        <li>
+                            <div class="seq-model">
+                                <img data-seq src="@item.ImageURL" alt="@item.AltText" />
+                            </div>
+                            <div class="seq-title">
+                                <span data-seq>@item.OfferTag</span>
+                                <h2 data-seq>@item.Title</h2>
+                                <p data-seq>@item.Description</p>
+                                <a data-seq href="#" class="aa-shop-now-btn aa-secondary-btn">@item.BtnText</a>
+                            </div>
+                        </li>
+}
+                    <!-- end single slide item -->
+
+                </ul>
+            </div>
+            <!-- slider navigation btn -->
+            <fieldset class="seq-nav" aria-controls="sequence" aria-label="Slider buttons">
+                <a type="button" href="" class="seq-prev" aria-label="Previous"><span class="fa fa-angle-left"></span></a>
+                <a type="button" href="" class="seq-next" aria-label="Next"><span class="fa fa-angle-right"></span></a>
+            </fieldset>
+        </div>
+    </div>
+</section>
+<!-- / slider -->
+<!-- Start Promo section -->
+
+<section id="aa-promo">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="aa-promo-area">
+                    <div class="row">
+                        <!-- promo left -->
+                        <div class="col-md-5 no-padding">
+                            <div class="aa-promo-left">
+                                <div class="aa-promo-banner">
+                                    <img src="~/Content/img/promotion.jpeg" alt="img">
+                                    <div class="aa-prom-content">
+                                        <span>75% Off</span>
+                                        <h4><a href="@Url.Action("GetProductsByCategory", "Product", new { @categoryName = "FruitProduct" })">Take Home</a></h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- promo right -->
+                        <div class="col-md-7 no-padding">
+                            <div class="aa-promo-right">
+                                @foreach (var item in @ViewBag.PromoRight)
+                                {
+
+                                    <div class="aa-single-promo-right">
+                                        <div class="aa-promo-banner">
+                                            <img src="@item.ImageURL" alt="@item.AltText">
+                                            <div class="aa-prom-content">
+                                                <span>@item.OfferTag</span>
+                                                <h4><a href="@Url.Action("GetProductsByCategory", "Product", new { @categoryName = @item.Category.Name })">@item.Title</a></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- / Promo section -->
+<!-- / Promo section -->
+<!-- Products section -->
+<section id="aa-product">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="aa-product-area">
+                        <div class="aa-product-inner">
+                            <!-- start prduct navigation -->
+                            <ul class="nav nav-tabs aa-products-tab">
+                                <li class="active"><a href="#fruit" data-toggle="tab">Fruits & Vegetables</a></li>
+                                <li><a href="#food" data-toggle="tab">Foodgrains, Oil & Masala</a></li>
+                                <li><a href="#snack" data-toggle="tab">snacks & branded foods</a></li>
+                                <li><a href="#meat" data-toggle="tab">Eggs,Meat & Fish</a></li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <!-- Start fruit product category -->
+                                <div class="tab-pane fade in active" id="fruit">
+                                    <ul class="aa-product-catg">
+                                        <!-- start single product item -->
+                                        @foreach (var item in (List<GroceryStore.Models.Product>)@ViewBag.FruitProduct)
+                                        {
+                                            { Html.RenderPartial("_Product", item); }
+                                        }
+                                        <!-- end start single product item -->
+
+                                    </ul>
+                                    <a class="aa-browse-btn" href="#">Browse all Product <span class="fa fa-long-arrow-right"></span></a>
+                                </div>
+
+                                <!-- start Foodgrain product category -->
+                                <div class="tab-pane fade" id="food">
+                                    <ul class="aa-product-catg">
+                                        <!-- start single product item -->
+                                        @foreach (var item in (List<GroceryStore.Models.Product>)@ViewBag.FoodgrainProduct)
+                                        {
+                                            { Html.RenderPartial("_Product", item); }
+                                        }
+                                        <!-- end start single product item -->
+
+                                    </ul>
+                                    <a class="aa-browse-btn" href="#">Browse all Product <span class="fa fa-long-arrow-right"></span></a>
+                                </div>
+
+                                <!-- start snack product category -->
+                                <div class="tab-pane fade" id="snack">
+                                    <ul class="aa-product-catg">
+                                        <!-- start single product item -->
+                                        @foreach (var item in (List<GroceryStore.Models.Product>)@ViewBag.SnackProduct)
+                                        {
+                                            { Html.RenderPartial("_Product", item); }
+                                        }
+                                        <!-- end start single product item -->
+
+                                    </ul>
+                                    <a class="aa-browse-btn" href="#">Browse all Product <span class="fa fa-long-arrow-right"></span></a>
+
+                                </div>
+
+                                <!-- start Meat product category -->
+                                <div class="tab-pane fade" id="meat">
+                                    <ul class="aa-product-catg">
+                                        <!-- start single product item -->
+                                        @foreach (var item in (List<GroceryStore.Models.Product>)@ViewBag.NonvegProduct)
+                                        {
+                                            { Html.RenderPartial("_Product", item); }
+                                        }
+                                        <!-- end start single product item -->
+
+                                    </ul>
+
+
+                                </div>
+                                <!-- / Meat product category -->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- / Products section -->
+<!-- banner section -->
+<section id="aa-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="aa-banner-area">
+                        <a href="#"><img src="~/Content/img/banner.jpg" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- popular section -->
+<section id="aa-popular-category">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="aa-popular-category-area">
+                        <!-- start prduct navigation -->
+                        <ul class="nav nav-tabs aa-products-tab">
+                            <li class="active"><a href="#popular" data-toggle="tab">Popular</a></li>
+                            <li><a href="#featured" data-toggle="tab">Featured</a></li>
+                            <li><a href="#latest" data-toggle="tab">Latest</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <!-- Start fruit popular category -->
+                            <div class="tab-pane fade in active" id="popular">
+                                <ul class="aa-product-catg aa-popular-slider">
+                                    <!-- start single product item -->
+                                    @foreach (var item in (List<GroceryStore.Models.Product>)@ViewBag.FruitProduct)
+                                    {
+                                        { Html.RenderPartial("_Product", item); }
+                                    }
+                                    <!-- end start single product item -->
+
+                                </ul>
+                                <a class="aa-browse-btn" href="#">Browse all Product <span class="fa fa-long-arrow-right"></span></a>
+                            </div>
+                            <!-- / popular product category -->
+                            <!-- start featured product category -->
+                            <div class="tab-pane fade" id="featured">
+                                <ul class="aa-product-catg aa-featured-slider">
+                                    <!-- start single product item -->
+                                    @foreach (var item in (List<GroceryStore.Models.Product>)@ViewBag.SnackProduct)
+                                    {
+                                        { Html.RenderPartial("_Product", item); }
+                                    }
+                                    <!-- end start single product item -->
+
+                                </ul>
+                                <a class="aa-browse-btn" href="#">Browse all Product <span class="fa fa-long-arrow-right"></span></a>
+                            </div>
+                            <!-- / featured product category -->
+                            <!-- start latest product category -->
+                            <div class="tab-pane fade" id="latest">
+                                <ul class="aa-product-catg aa-latest-slider">
+                                    <!-- start single product item -->
+                                    @foreach (var item in (List<GroceryStore.Models.Product>)@ViewBag.FoodgrainProduct)
+                                    {
+                                        { Html.RenderPartial("_Product", item); }
+                                    }
+                                    <!-- end start single product item -->
+
+                                </ul>
+                                <a class="aa-browse-btn" href="#">Browse all Product <span class="fa fa-long-arrow-right"></span></a>
+                            </div>
+                            <!-- / latest product category -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- / popular section -->

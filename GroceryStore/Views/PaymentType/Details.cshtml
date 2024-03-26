@@ -1,0 +1,20 @@
+﻿@model GroceryStore.Models.PaymentType
+
+<h2>Payment Type Details</h2>
+
+<table class="table">
+    <tr>
+        <th>Payment Type ID</th>
+        <td>@Model.PayTypeID</td>
+    </tr>
+    <tr>
+        <th>Type Name</th>
+        <td>@Model.TypeName</td>
+    </tr>
+    <tr>
+        <th>Description</th>
+        <td>@Model.Description</td>
+    </tr>
+</table>
+
+@Html.ActionLink("Back to List", "Index")
