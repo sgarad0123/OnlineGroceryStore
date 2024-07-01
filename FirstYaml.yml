@@ -1,48 +1,31 @@
+# azure-pipelines.yml
+
 trigger:
 - main
 
-stages:
-  - stage: Build
-    jobs:
-      - job: Build 
-        pool:
-          vmImage: 'windows-latest'
-        steps:
-          # Install npm packages
-          - task: Npm@1
-            inputs:
-              command: 'install'
-          
-          # Run the custom build command
-          - task: Npm@1
-            inputs:
-              command: 'custom'
-              customCommand: 'run build'
-          
-          # Publish build artifacts
-          - task: PublishBuildArtifacts@1
-            inputs:
-              PathtoPublish: 'build'
-              ArtifactName: 'drop'
-              publishLocation: 'Container'
+pool:
+  name: 'Default'  # Ensure this is the pool where your local agent is registered
 
-  - stage: Deploy
-    jobs:
-      - job: Deploy
-        pool:
-          name: 'Default'  # Replace 'Default' with your custom agent pool name
-        steps:
-          # Download build artifacts
-          - task: DownloadBuildArtifacts@1
-            inputs:
-              buildType: 'current'
-              downloadType: 'single'
-              artifactName: 'drop'
-              downloadPath: '$(System.ArtifactsDirectory)'
+jobs:
+- job: BuildAndDeploy
+  displayName: 'Build and Deploy to Local PC'
+  steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.x'
+        addToPath: true
 
-          # Deploying to the local machine
-          - script: |
-              echo "Deploying to local machine"
-              if not exist "D:\ADO\SampleProject" mkdir "D:\ADO\SampleProject"
-              xcopy /E /I "$(System.ArtifactsDirectory)\drop\*" "D:\ADO\SampleProject\"
-            displayName: 'Deploy to Local Machine'
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+      displayName: 'Install Dependencies'
+
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(Build.SourcesDirectory)'
+        Contents: '**'
+        TargetFolder: '\D$\ADO\ShubhamSource'  # Adjust this path to your local deployment directory
+
+    - script: |
+        nohup python /path/to/your/local/project/app.py &
+      displayName: 'Run Application'
