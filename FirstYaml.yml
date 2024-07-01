@@ -13,15 +13,15 @@ stages:
       pool:
           vmImage: 'ubuntu-latest'
       steps:
-       - task: Npm@1
-         inputs:
+      - task: Npm@1
+        inputs:
           command: 'install'
-       - task: Npm@1
-         inputs:
+      - task: Npm@1
+        inputs:
           command: 'custom'
           customCommand: 'run build'
-       - task: PublishBuildArtifacts@1
-         inputs:
+      - task: PublishBuildArtifacts@1
+        inputs:
            PathtoPublish: 'build'
            ArtifactName: 'drop'
            publishLocation: 'Container'
