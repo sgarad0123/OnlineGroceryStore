@@ -34,10 +34,11 @@ stages:
       pool:
           vmImage: 'ubuntu-latest'
       steps:
-        - 
-- task: AddDeploymentGroupMachine@0
-  inputs:
-    DeploymentGroupName: 'ShubhamLocal'
-    AccessToken: '@@AccessToken@@'
-    ComputerName: 'LAPTOP-HIFNTDTV'
-    Replace: true
+        - task: AddDeploymentGroupMachine@0
+          inputs:
+            DeploymentGroupName: 'ShubhamLocal'
+            AccessToken: '@@AccessToken@@'
+            ComputerName: 'LAPTOP-HIFNTDTV'
+            Replace: true 
+
+
