@@ -18,7 +18,8 @@ stages:
           command: 'install'
        - task: Npm@1
          inputs:
-          command: 'publish'
+          command: 'custom'
+          customCommand: 'run build'
        - task: PublishBuildArtifacts@1
          inputs:
            PathtoPublish: 'build'
@@ -34,8 +35,15 @@ stages:
       pool:
           vmImage: 'ubuntu-latest'
       steps:
-        - task: AddDeploymentGroupMachine@0
-          inputs:
+       - task: DownloadBuildArtifacts@1
+         inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'drop'
+          downloadPath: '$(System.ArtifactsDirectory)'
+     
+       - task: AddDeploymentGroupMachine@0
+         inputs:
             DeploymentGroupName: 'ShubhamLocal'
             AccessToken: '@@AccessToken@@'
             ComputerName: 'LAPTOP-HIFNTDTV'
