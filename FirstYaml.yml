@@ -11,7 +11,7 @@ stages:
    jobs:
     - job: Build 
       pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'MyOwnAgentPool'
       steps:
       - task: Npm@1
         inputs:
@@ -33,7 +33,7 @@ stages:
    jobs:
     - job: Deploy
       pool:
-          vmImage: 'ubuntu-latest'
+          vmImage: 'MyOwnAgentPool'
       steps:
        - task: DownloadBuildArtifacts@1
          inputs:
@@ -41,12 +41,16 @@ stages:
           downloadType: 'single'
           artifactName: 'drop'
           downloadPath: '$(System.ArtifactsDirectory)'
+       - script: 
+           echo "Deploying to local machine"
+           mkdir -p/path/to/deploy
+           cp -r $(System.ArtifactsDirectory/drop/*/D:\ADO\SampleProject)
      
-       - task: AddDeploymentGroupMachine@0
-         inputs:
-            DeploymentGroupName: 'ShubhamLocal'
-            AccessToken: '@@AccessToken@@'
-            ComputerName: 'LAPTOP-HIFNTDTV'
-            Replace: true 
+      #  - task: AddDeploymentGroupMachine@0
+      #    inputs:
+      #       DeploymentGroupName: 'ShubhamLocal'
+      #       AccessToken: '@@AccessToken@@'
+      #       ComputerName: 'LAPTOP-HIFNTDTV'
+      #       Replace: true 
 
 
