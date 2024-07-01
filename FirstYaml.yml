@@ -1,0 +1,43 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+ - main
+
+stages:
+ - stage: Build
+   jobs:
+    - job: Build 
+      pool:
+          vmImage: 'ubuntu-latest'
+      steps:
+       - task: Npm@1
+         inputs:
+          command: 'install'
+       - task: Npm@1
+         inputs:
+          command: 'publish'
+       - task: PublishBuildArtifacts@1
+         inputs:
+           PathtoPublish: 'build'
+           ArtifactName: 'drop'
+           publishLocation: 'Container'
+
+
+
+
+ - stage: Deploy
+   jobs:
+    - job: Deploy
+      pool:
+          vmImage: 'ubuntu-latest'
+      steps:
+        - 
+- task: AddDeploymentGroupMachine@0
+  inputs:
+    DeploymentGroupName: 'ShubhamLocal'
+    AccessToken: '@@AccessToken@@'
+    ComputerName: 'LAPTOP-HIFNTDTV'
+    Replace: true
