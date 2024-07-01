@@ -11,7 +11,7 @@ stages:
    jobs:
     - job: Build 
       pool:
-          vmImage: 'Azure Pipelines'
+          vmImage: 'MyOwnAgentPool'
       steps:
       - task: Npm@1
         inputs:
