@@ -1,56 +1,48 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
 stages:
- - stage: Build
-   jobs:
-    - job: Build 
-      pool:
+  - stage: Build
+    jobs:
+      - job: Build 
+        pool:
           vmImage: 'windows-latest'
-      steps:
-      - task: Npm@1
-        inputs:
-          command: 'install'
-      - task: Npm@1
-        inputs:
-          command: 'custom'
-          customCommand: 'run build'
-      - task: PublishBuildArtifacts@1
-        inputs:
-           PathtoPublish: 'build'
-           ArtifactName: 'drop'
-           publishLocation: 'Container'
+        steps:
+          # Install npm packages
+          - task: Npm@1
+            inputs:
+              command: 'install'
+          
+          # Run the custom build command
+          - task: Npm@1
+            inputs:
+              command: 'custom'
+              customCommand: 'run build'
+          
+          # Publish build artifacts
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: 'build'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
 
+  - stage: Deploy
+    jobs:
+      - job: Deploy
+        pool:
+          name: 'Default'  # Replace 'Default' with your custom agent pool name
+        steps:
+          # Download build artifacts
+          - task: DownloadBuildArtifacts@1
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'drop'
+              downloadPath: '$(System.ArtifactsDirectory)'
 
-
-
- - stage: Deploy
-   jobs:
-    - job: Deploy
-      pool:
-          vmImage: 'windows-latest'
-      steps:
-       - task: DownloadBuildArtifacts@1
-         inputs:
-          buildType: 'current'
-          downloadType: 'single'
-          artifactName: 'drop'
-          downloadPath: '$(System.ArtifactsDirectory)'
-       - script: 
-           echo "Deploying to local machine"
-           mkdir -p/path/to/deploy
-           cp -r $(System.ArtifactsDirectory/drop/*/D:\ADO\SampleProject)
-     
-      #  - task: AddDeploymentGroupMachine@0
-      #    inputs:
-      #       DeploymentGroupName: 'ShubhamLocal'
-      #       AccessToken: '@@AccessToken@@'
-      #       ComputerName: 'LAPTOP-HIFNTDTV'
-      #       Replace: true 
-
-
+          # Deploying to the local machine
+          - script: |
+              echo "Deploying to local machine"
+              if not exist "D:\ADO\SampleProject" mkdir "D:\ADO\SampleProject"
+              xcopy /E /I "$(System.ArtifactsDirectory)\drop\*" "D:\ADO\SampleProject\"
+            displayName: 'Deploy to Local Machine'
