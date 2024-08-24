@@ -29,11 +29,10 @@ stages:
 - stage: Build_Stage
   displayName: Build Apps
   jobs:
-
   - job: WebApp
     displayName: Build Web App
     pool:
-      name: Hosted Windows 2019 with VS2019 
+      name: ADO 
       vmImage: 'windows-latest'
     variables:
       BuildConfiguration: release
