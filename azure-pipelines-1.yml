@@ -18,8 +18,7 @@ trigger:
      - 01_azure-pipelines-ci.yml
      - 02_azure-pipelines-ci.yml
      - 03_azure-pipelines-ci-cd.yml
-agents:
-  - name: ADO
+
 parameters:
 - name: runCompletePipeline
   displayName: Run All Tasks ?
