@@ -35,10 +35,15 @@ stages:
     displayName: Build Web App
     pool:
       name: Hosted Windows 2019 with VS2019 
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
     variables:
       BuildConfiguration: release
     steps:
+    - task: NuGetToolInstaller@1
+
+    - task: NuGetCommand@2
+      inputs:
+        restoreSolution: '$(solution)'
 
     - task: UseDotNet@2
       displayName: Install .NET 6 sdk
