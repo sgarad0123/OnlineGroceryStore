@@ -1,34 +1,54 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+pr:
+  branches:
+    include:
+      - dev
+  paths:
+    exclude:
+      - docs/*
+      - README.md
 
 trigger:
-- Release
+ branches:
+   include:
+     - master
+ paths:
+   exclude:
+     - docs/*
+     - README.md
+     - 01_azure-pipelines-ci.yml
+     - 02_azure-pipelines-ci.yml
+     - 03_azure-pipelines-ci-cd.yml
+agents:
+  - name: agent1
+parameters:
+- name: runCompletePipeline
+  displayName: Run All Tasks ?
+  type: boolean
+  default: true
 
-pool:
-  vmImage: 'windows-latest'
+stages:
+- stage: Build_Stage
+  displayName: Build Apps
+  jobs:
 
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  - job: WebApp
+    displayName: Build Web App
+    pool:
+      name: Hosted Windows 2019 with VS2019 
+      vmImage: 'windows-2019'
+    variables:
+      BuildConfiguration: release
+    steps:
 
-steps:
-- task: NuGetToolInstaller@1
+    - task: UseDotNet@2
+      displayName: Install .NET 6 sdk
+      inputs:
+        packageType: sdk
+        version: 6.0.x
+        installationPath: $(Agent.ToolsDirectory)/dotnet
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    - task: DotNetCoreCLI@2
+      displayName: Restore Nuget Packages
+      inputs:
+        command: restore
+        projects: '**/WebApp.csproj'
